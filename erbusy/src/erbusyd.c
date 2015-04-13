@@ -28,12 +28,15 @@
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <time.h>
 #include <sys/ioctl.h>
 
 #define BUFSIZE 1024
 
 #define BUTTON_IOCTL_BASE		'b'
 #define BUTTON_IOCTL_WRITE_ACTIVITY_LED	_IOW( BUTTON_IOCTL_BASE,2,unsigned int)
+
+#define SHUTDOWN_DELAY 60*60
 
 static eCcBusyState busy = ccBusyState_Blink;
 static erClientChannel_t contentListerChannel;
@@ -100,6 +103,8 @@ int main(int argc, char *argv[])
     eCcBusyState  wasbusy = ccBusyState_Undefined;
     int           sleep = 100*1000;
     int           ret = 0;
+    time_t        lastbusytime = 0, currenttime = 0;
+    int           shutdownnow = 0;
 	
     if (pthread_create(&erTid, NULL, testIPC, (void *) "1") != 0)
     {
@@ -118,9 +123,13 @@ int main(int argc, char *argv[])
         exit(-1);
     }
 		
+    time(&currenttime);
+    lastbusytime = currenttime;
+
     while (1)
     {
         sleep = 100*1000;
+        time(&currenttime);
 
         switch (busy)
         {
@@ -128,6 +137,7 @@ int main(int argc, char *argv[])
                 switch_led(button_device, blink);
                 blink = !blink;
                 sleep = 40*1000;
+                lastbusytime = currenttime;
                 break;
 
             case ccBusyState_On:
@@ -152,6 +162,13 @@ int main(int argc, char *argv[])
                 }
         }
 
+        if (((currenttime - lastbusytime) > SHUTDOWN_DELAY) && shutdownnow == 0)
+        {
+            shutdownnow = 1;
+            system("sync");
+            usleep(1000);
+            system("halt");
+        }
         wasbusy = busy;
         usleep(sleep);
     }
