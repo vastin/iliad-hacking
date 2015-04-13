@@ -1,0 +1,80 @@
+#
+# Theme : ipdf 
+# -------
+
+#pixmap_path "/usr/share//"
+
+#
+# PINCODE_UI
+#
+style "pincode_screen_background"
+{
+	bg_pixmap[NORMAL] = "pincode_lock_background.png"
+}
+style "pincode_input_background"
+{
+	bg_pixmap[NORMAL] = "Bar_707_347_black.png"
+}
+
+style "pincode_message_title_text"
+{
+	font_name = "Bitstream Vera Sans 12"
+	fg[NORMAL] = { 1.0, 1.0, 1.0}	
+}
+
+style "pincode_message_error_text"
+{
+	font_name = "Bitstream Vera Sans 9"
+	fg[NORMAL] = { 1.0, 1.0, 1.0}	
+}
+
+style "pin_code_entry"
+{
+    font_name = "Bitstream Vera Sans 8"
+	fg[NORMAL] = { 1.0, 1.0, 1.0}	
+}
+
+style "pincode_confirm"
+{	
+    font_name = "Bitstream Vera Sans bold 8"
+    fg[PRELIGHT]= {0.0, 0.0, 0.0}
+    fg[NORMAL]= {0.0, 0.0, 0.0}
+    fg[INSENSITIVE]= {0.0, 0.0, 0.0}
+    fg[ACTIVE]= {1.0, 1.0, 1.0}
+    fg[SELECTED]= {1.0, 1.0, 1.0}
+
+    engine "pixmap" {
+        image
+        {
+            function          = FOCUS
+            file              = "transparent.png"
+            stretch           = TRUE
+        }	  
+        image 
+        {
+            function        = BOX
+            recolorable     = TRUE
+            shadow          = IN
+            file            = "Btn_100_27_selected.png"
+            stretch         = TRUE
+        }
+        image 
+        {
+            function        = BOX
+            recolorable     = TRUE
+            shadow          = OUT
+            file            = "Btn_100_27_grey.png"
+            stretch         = TRUE
+        }
+    }	  
+}
+
+widget_class "*GtkButton*" style "pincode_confirm"
+widget_class "*GtkToggleButton*" style "pincode_confirm"
+
+widget "*pincode_screen_background" style "pincode_screen_background"
+widget "*pincode_message_title_text" style "pincode_message_title_text"
+widget "*pincode_message_error_text" style "pincode_message_error_text"
+widget "*pincode_input_background" style "pincode_input_background"
+widget "*pincode_confirm" style "pincode_confirm"
+widget "*pin_code_entry" style "pin_code_entry"
