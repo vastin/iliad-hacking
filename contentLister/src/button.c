@@ -791,7 +791,8 @@ static void default_button_handling(int button, gpointer data)
         case PAGETURN_FORWARD | BUTTON_LONG_PRESS:
             CL_LOGPRINTF("PAGETURN_FORWARD LONG");
             gdk_threads_enter();
-            pm_SendKey(GDK_F1);
+            //pm_SendKey(GDK_F1);
+            pm_SendKey(GDK_Page_Down);
             gdk_threads_leave();
             break;
 
@@ -805,7 +806,8 @@ static void default_button_handling(int button, gpointer data)
         case PAGETURN_BACK | BUTTON_LONG_PRESS:
             CL_LOGPRINTF("PAGETURN_BACK LONG");
             gdk_threads_enter();
-            pm_SendKey(GDK_F2);
+            //pm_SendKey(GDK_F2);
+            pm_SendKey(GDK_Page_Up);
             gdk_threads_leave();
             break;
 
